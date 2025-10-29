@@ -7,7 +7,7 @@ pipeline {
 
   parameters {
     string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Branch to build from')
-    string(name: 'STUDENT_NAME', defaultValue: 'Yasir Sultan', description: 'Your full name') // ✅ replace with your name
+    string(name: 'STUDENT_NAME', defaultValue: 'Yasir Sultan', description: 'Provide your name')
     choice(name: 'ENVIRONMENT', choices: ['dev', 'qa', 'prod'], description: 'Select environment')
     booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run Jest tests after build')
   }
@@ -34,11 +34,11 @@ pipeline {
 
     stage('Build') {
       steps {
-        echo "Building version ${APP_VERSION} for ${params.ENVIRONMENT} environment"
+        echo " Building version ${APP_VERSION} for ${params.ENVIRONMENT} environment"
         sh '''
           echo "Simulating build process..."
           mkdir -p build
-          cp *.js build/
+          cp src/*.js build/
           echo "Build completed successfully!"
           echo "App version: ${APP_VERSION}" > build/version.txt
         '''
@@ -46,9 +46,7 @@ pipeline {
     }
 
     stage('Test') {
-      when {
-        expression { return params.RUN_TESTS }
-      }
+      when { expression { return params.RUN_TESTS } }
       steps {
         echo "Running Jest tests..."
         sh 'npm test'
