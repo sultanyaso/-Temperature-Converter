@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  tempservice:
+    image: yasirsultan/temp-service:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/data
